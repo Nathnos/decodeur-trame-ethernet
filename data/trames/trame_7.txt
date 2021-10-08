@@ -1,0 +1,7 @@
+0000 00
+0001 11 32 76
+euieui
+38EUI 2828
+001o8
+9A 
+L’espace rend la trame invalide, car il n’y a pas assez d’octet sur la ligne 2 pour l’offset de la ligne 3
