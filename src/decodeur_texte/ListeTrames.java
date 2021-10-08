@@ -4,9 +4,9 @@ import java.util.List;
 /**
  * Wrapper pour utiliser des listes de listes de listes :
  * 
- * List<String> : une ligne (chaque Integer repr�sente soit un offset soit un octet)
- * List<List<String>> : une trame
- * List<List<List<String>>> : toutes les trames
+ * List<Integer> : une ligne : chaque Integer représente soit un offset (au tout début, pour i = 0) soit un octet (pour i > 0)
+ * List<List<Integer>> : une trame (avec les lignes dans le bon ordre)
+ * List<List<List<Integer>>> : toutes les trames (dans l’ordre)
  */
 public class ListeTrames {
 	private List<List<List<Integer>>> trames;
