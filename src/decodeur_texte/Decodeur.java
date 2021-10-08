@@ -149,8 +149,12 @@ public class Decodeur {
 		return lines.toString();
 	}
 	
-	
 	public ListeTrames getTrames() {
 		return trames;
+	}
+	
+	public static ListeTrames getListTrames(String path) {
+		Decodeur d = new Decodeur(path);
+		return d.getTrames();
 	}
 }
