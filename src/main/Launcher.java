@@ -1,3 +1,4 @@
+package main;
 import decodeur_texte.Decodeur;
 import decodeur_texte.ListeTrames;
 

@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 import decodeur_texte.Decodeur;
 import decodeur_texte.ListeTrames;
 
-class DecodeurTest {
+public class DecodeurTest {
 	private final String trame_path = "data/trames/trame_";
 	
 	@Test
-	void testFacile() {
+	public void testFacile() {
 		ListeTrames trames0 = testTaille("0", 3, 19, 1);
 		assertEquals(trames0.getOctet(0, 1, 2), 118);
 		ListeTrames trames1 = testTaille("1", 3, 19, 2);
@@ -20,7 +20,7 @@ class DecodeurTest {
 	}
 	
 	@Test
-	void testAvances() {
+	public void testAvances() {
 		testTaille("2", 5, 39, 1);
 		testTaille("3", 3, 6, 1);
 		assertThrows("4");

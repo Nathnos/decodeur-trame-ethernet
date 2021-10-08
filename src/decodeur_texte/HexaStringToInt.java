@@ -1,4 +1,4 @@
-package analyseur;
+package decodeur_texte;
 
 /**
  * Classe outil pour convertir un octet hexadécimal (String deux caractères valides) en int

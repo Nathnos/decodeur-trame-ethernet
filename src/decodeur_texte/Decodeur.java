@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import analyseur.HexaStringToInt;
-
 /**
  * Exporte le fichier, en gardant les seules lignes valides (toutes trames confondues)
  * Sépare les différentes trames, filtres les fins de ligne, détecte les lignes invalides et …
