@@ -7,6 +7,22 @@ trames Ethernet à la suite (sans préambule ni champ FCS).
 
 [Vidéo de présentation](https://www.youtube.com) (à venir)
 
+## Structure du code
+
+Le code se compose en deux parties : 
+- une partie pour extraires les informations pertinents depuis le fichier texte
+- une partie d’analyse de la trame, qui sera écrite dans un fichier .txt
+
+### Partie déchiffrage du fichier texte
+- On  commence par lire le fichier en entier, en retirant les lignes qui ne commencent pas par un offset valide (au moins 3 symboles hexa, suivis d’un espace). On a alors une liste de lignes.
+- On découpe ensuite ces lignes dans les différentes trames, grâce à l’offset. On détecte ici aussi s’il y a des offsets invalides (trames qui commencent au-dessus de 0, offset qui diminue dans une même trame).
+- On va rediviser chaque ligne de chaque trame. On regarde si la ligne possède assez d’octets pour que l’offset suivant soit valide, et on coupe le texte en fin de ligne.
+- On transforme les symboles hexadécimaux en valeurs numériques (grâce à des fonctions build-in de java).
+- On retourne ensuite un wrapper ListeTrames, pour faciliter l’accès aux diverses trames et octets pour la partie analyse.
+
+### Partie analyse
+(à venir)
+
 ## Liste des protocoles analyés :
 - Couche 2: Ethernet 
 - Couche 3: IP 
