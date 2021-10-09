@@ -14,8 +14,7 @@ public class Launcher {
 		System.out.println("Fichier chargé : " + path);
 		System.out.println(trames);
 		//lancer_analyse(trames);
-//		PrintWriter out = new PrintWriter("retour.txt");
-		PrintWriter out = new PrintWriter("C:\\Users\\villa\\Desktop\\retour.txt");
+		PrintWriter out = new PrintWriter("retour.txt");
 		out.println(trames);
 		out.close();
 	}
