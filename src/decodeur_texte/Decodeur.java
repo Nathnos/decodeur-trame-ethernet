@@ -73,6 +73,9 @@ public class Decodeur {
 	
 	private List<List<Line>> decoupe_en_trames(List<Line> lines) {
 		List<List<Line>> trames_non_decoupee = new ArrayList<List<Line>>();
+		if(lines.size() == 0) {
+			return trames_non_decoupee;
+		}
 		if(getOffset(lines.get(0)) != 0) { // PREMIER OFFSET À 0, SINON INVALIDE
 			throw new IllegalArgumentException("Ligne invalide (premier offset pas à 0) : ligne " + lines.get(0).getLine());
 		}

@@ -20,6 +20,12 @@ public class DecodeurTest {
 	}
 	
 	@Test
+	public void fichierVide() {
+		testTaille("vide", 0, 0, 0);
+		testTaille("vide_avec_texte", 0, 0, 0);
+	}
+	
+	@Test
 	public void testAvances() {
 		testTaille("2", 5, 39, 1);
 		testTaille("3", 3, 6, 1);
