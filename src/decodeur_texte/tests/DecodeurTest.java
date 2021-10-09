@@ -26,6 +26,12 @@ public class DecodeurTest {
 	}
 	
 	@Test
+	public void testReel() {
+		testTaille("reelle", 60, 883, 10);
+		
+	}
+	
+	@Test
 	public void testAvances() {
 		testTaille("2", 5, 39, 1);
 		testTaille("3", 3, 6, 1);
