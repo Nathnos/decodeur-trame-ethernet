@@ -52,7 +52,7 @@ public class Decodeur {
 			// Pour chaque trame, on réduit (enlève les fin de lignes, détecte lignes invalide ou les octets en trop…)
 			trames_hexa.add(decouperEtReduire(trame_non_decoupee));
 		}
-		trames = new ListeTrames(trames_hexa); //Enveloppe dans une belle classe !
+		trames = new ListeTrames(ravel(trames_hexa)); //Enveloppe dans une belle classe !
 	}
 	
 	/** Test si une ligne possède un offset valide */
@@ -157,5 +157,19 @@ public class Decodeur {
 	public static ListeTrames getListTrames(String path) {
 		Decodeur d = new Decodeur(path);
 		return d.getTrames();
+	}
+	
+	private List<List<Integer>> ravel(List<List<List<Integer>>> trames_avec_lignes) {
+		List<List<Integer>> trames_sans_lignes = new ArrayList<List<Integer>>();
+		for(List<List<Integer>> trame_avec_ligne : trames_avec_lignes) { //Pour chaque trame
+			ArrayList<Integer> trame_sans_lignes = new ArrayList<Integer>();
+			for(List<Integer> ligne : trame_avec_ligne) { //Pour chaque ligne
+				for(Integer octet : ligne) { //Pour chaque octet
+					trame_sans_lignes.add(octet);
+				}
+			}
+			trames_sans_lignes.add(trame_sans_lignes);	
+		}
+		return trames_sans_lignes;
 	}
 }
