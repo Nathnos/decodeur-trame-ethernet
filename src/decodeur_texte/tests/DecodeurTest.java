@@ -27,14 +27,14 @@ public class DecodeurTest {
 	
 	@Test
 	public void testReel() {
+		testTaille("reelle_1espace", 883, 10);
 		testTaille("reelle", 883, 10);
-		
 	}
 	
 	@Test
 	public void testAvances() {
 		testTaille("2", 39, 1);
-		testTaille("3", 6, 1);
+		testTaille("3", 7, 1);
 		assertThrows("4");
 		testTaille("5", 7, 3);
 		assertThrows("6");

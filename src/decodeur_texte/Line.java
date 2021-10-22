@@ -6,7 +6,7 @@ public class Line {
 	
 	public Line(int line, String data) {
 		this.line = line;
-		this.data = data;
+		this.data = data.replaceAll("( )+", " ");
 	}
 	
 	public int getLine() {
