@@ -16,7 +16,7 @@ Le code se compose en deux parties : 
 ### Partie déchiffrage du fichier texte
 - On  commence par lire le fichier en entier, en retirant les lignes qui ne commencent pas par un offset valide (au moins 3 symboles hexa, suivis d’un espace). On a alors une liste de lignes.
 - On découpe ensuite ces lignes dans les différentes trames, grâce à l’offset. On détecte ici aussi s’il y a des offsets invalides (trames qui commencent au-dessus de 0, offset qui diminue dans une même trame).
-- On va rediviser chaque ligne de chaque trame. On regarde si la ligne possède assez d’octets pour que l’offset suivant soit valide, et on coupe le texte en fin de ligne.
+- On va rediviser chaque ligne de chaque trame. On regarde si la ligne possède assez d’octets pour que l’offset suivant soit valide, puis on enlève l’offset et la fin de ligne.
 - On transforme les symboles hexadécimaux en valeurs numériques (grâce à des fonctions build-in de java).
 - On retourne ensuite un wrapper ListeTrames, pour faciliter l’accès aux diverses trames et octets pour la partie analyse.
 
