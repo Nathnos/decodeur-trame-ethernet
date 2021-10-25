@@ -9,9 +9,9 @@ import decodeur_texte.ListeTrames;
 public class Launcher {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String path = args[0];
+		String path =  "data/trames_analyse/analyse1.txt";
 		ListeTrames trames = Decodeur.getListTrames(path);
-		System.out.println("Fichier chargé : " + path);
+		System.out.println("Fichier chargï¿½ : " + path);
 		System.out.println(trames);
 		//lancer_analyse(trames);
 		PrintWriter out = new PrintWriter("retour.txt");
