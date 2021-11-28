@@ -1,22 +1,20 @@
 package main;
 
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 
+import Layer.Analyse;
 import decodeur_texte.Decodeur;
 import decodeur_texte.ListeTrames;
 
 public class Launcher {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String path =  "data/trames_analyse/analyse1.txt";
+		String path =  "data/trames_analyse/trame_DNS_2_answers.txt"; // TODO prendre path depuis args
 		ListeTrames trames = Decodeur.getListTrames(path);
-		System.out.println("Fichier charg� : " + path);
-		System.out.println(trames);
-		//lancer_analyse(trames);
-		PrintWriter out = new PrintWriter("retour.txt");
-		out.println(trames);
-		out.close();
+		for(int i = 0 ; i < trames.getNbTrames() ; i++) {
+			System.out.println("Trame " + (i+1));
+			Analyse.analyse(trames.getTrame(i)); // Analyse de chaque trame
+			System.out.print("\n\n"); // Saut lignes entre analyses
+		}
 	}
-
 }

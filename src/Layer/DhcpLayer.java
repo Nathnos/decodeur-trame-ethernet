@@ -1,23 +1,32 @@
 package Layer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DhcpLayer implements Frame {
+	private List<Integer> header;
+	private List<Integer> data;
 
-	private List<Integer> frame;
 	public DhcpLayer(List<Integer> frame) {
-		this.frame = frame;
+		header = new ArrayList<>();
+		data = new ArrayList<>();
+		int header_limit = 12;
+		for (int i = 0; i < header_limit ; i++) //12 premiers octets
+			header.add(frame.get(i));
+		for (int i = header_limit; i < frame.size() ; i++)
+			data.add(frame.get(i));
 	}
-	@Override
+	
 	public List<Integer> getHeader() {
-		// TODO Auto-generated method stub
-		return null;
+		return header;
 	}
 
-	@Override
 	public List<Integer> getData() {
-		// TODO Auto-generated method stub
-		return null;
+		return data;
+	}
+	
+	getOP() {
+		…
 	}
 
 }

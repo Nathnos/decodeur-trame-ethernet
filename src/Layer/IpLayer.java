@@ -3,185 +3,122 @@ package Layer;
 import java.util.ArrayList;
 import java.util.List;
 
+import decodeur_texte.HexFactory;
+
 /**
  * Classe outil pour analyser la trame sur la couche IP
  * @author Thien
  *
  */
 public class IpLayer implements Frame {
-	private List <Integer> frame;
+	private List <Integer> header;
+	private List <Integer> data;
+	
 	public IpLayer(List <Integer> frame) {
-		this.frame =frame;
+		header = new ArrayList<>();
+		data = new ArrayList<>();
+		int header_size = HexFactory.split_hex_second(frame.get(0)) * 4; // IHL * 4;
+		for (int i = 0; i < header_size ; i++)
+			header.add(frame.get(i));
+		for (int i = header_size; i < frame.size() ; i++)
+			data.add(frame.get(i));
 	}
-	@Override
-	/*
-	 * Retourner les 20 primeres octets
-	 */
+	
 	public List<Integer> getHeader() {
-		List <Integer> res = new ArrayList<Integer>();
-		for (int i = 0 ;i < getHeaderLength(); i++) {
-			res.add(frame.get(i));
-		}
-		return res;
+		return header;
 	}
-	/*
-	 * Retourner les restant de trame
-	 */
-	@Override
+	
 	public List<Integer> getData() {
-		List <Integer> res = new ArrayList<Integer>();
-		for (int i = getHeaderLength() ;i < frame.size(); i++) {
-			res.add(frame.get(i));
-		}
-		return res;
+		return data;
 	}
-	/*
-	 * Retourner le type de IPv4 ou IPv6
-	 * IPv4 si 4 premiers bit = 0100 => en dec 4
-	 * from range 40 to 4E in Heximal => from 64 to 78 in Decimal
-	 */
-	public boolean isIPv4() {
-		if ((this.frame.get(0)<=78) && (this.frame.get(0)>=64)){
-			return true;
-		}
-		return false;
-	}
+	
 	public String getVersion() {
-		if (this.isIPv4()) {
-			return "4";
-		}
-		return "6";
+		int IPv = HexFactory.split_hex_first(header.get(0)); //4 pour IPv4, 6 pour IPv6
+		return "IPv" + IPv;
 	}
-	/*
-	 * Retourner la taille d'entete
-	 * elle a 4 bits de 5eme à 8eme dans la trame
-	 */
+	
 	public int getHeaderLength() {
-		String firstOctet = Integer.toHexString(frame.get(0));
-		int length = Integer.parseInt(String.valueOf(firstOctet.charAt(1)),16);
-		return length*4;	
-		
+		return HexFactory.split_hex_second(header.get(0)) * 4;
 	}
-	/*
-	 * Retourner Differentiated Services Code qui sititue a 2eme octet
-	 * 
-	 */
-	public String getDSCP() {
-		
-		return ("0x"+ Integer.toHexString(this.getHeader().get(1)));
+	
+	public String getTOS() {
+		return ("0x"+ header.get(1));
 	}
-	/*
-	 * Retourner la taille de la trame
-	 * sititue a 16eme bits a 32eme bits
-	 *   
-	 */
+	
 	public int getTotalLength() {
-		String lengthString = "";
-		String firstHex = Integer.toHexString(this.getHeader().get(2));
-		String secondHex = Integer.toHexString(this.getHeader().get(3));
-		
-		lengthString = firstHex + secondHex;
-		return Integer.parseInt(lengthString, 16);
+		return HexFactory.merge2(header.get(2), header.get(3));
 	}
-	/*
-	 * Retourner Identification 
-	 * sititue a 5eme octet et 6eme octet
-	 *   
-	 */
-	public String getIden() {
-		String res = "0x";
-		int first = this.getHeader().get(4);
-		
-		if (first < 10) {
-			res+="0";
+	
+	public String getIden() { //TrustedHostID ; Fragment Identification
+		return "0x" + HexFactory.merge2(header.get(4), header.get(5));
 		}
-		int seconde = this.getHeader().get(5);
-		
-		if (seconde < 10) {
-			res+="0";
-		}
-		res=res + Integer.toHexString(first) + Integer.toHexString(seconde);
-		return (res);
-		}
-	/*
-	 * Retouner Flags qui sititue a 7eme octet
-	 */
-	public String getFlag() {
-		return ("0x"+ Integer.toHexString(this.getHeader().get(6)));
+	
+	public String getFragmentOffset() {
+		return "0x" + HexFactory.split_binary_8(header.get(6)).substring(3);
 	}
-	public void analyseFlag() {
-		String hexa = Integer.toHexString(this.getHeader().get(6));
-		StringBuffer binary = new StringBuffer("");
-		if (Integer.parseInt(String.valueOf(hexa.charAt(0)))<=8)
-			binary.append("0");	
-		binary.append(Integer.toBinaryString(this.getHeader().get(6)));
-		System.out.println(binary.charAt(0) + " = Reserved bit: "  + ((binary.charAt(0)=='1')?"Set" : "Not Set"));
-		System.out.println(binary.charAt(1) + " = Dont't fragment: "  + ((binary.charAt(1)=='1')?"Set" : "Not Set"));
-		System.out.println(binary.charAt(2) + " = More fragments: "  + ((binary.charAt(2)=='1')?"Set" : "Not Set"));
+	
+	public boolean getFlagDF() {
+		return HexFactory.split_binary_8(header.get(6)).charAt(1) == '1';
 	}
-	/* Retouner Time To Live qui sititue a 9eme octet
-	 * 
-	 */
+	
+	public boolean getFlagMF() {
+		return HexFactory.split_binary_8(header.get(6)).charAt(2) == '1';
+	}
+	
 	public int getTTL() {
 		return this.getHeader().get(8);
-	/*
-	 * Retourner le Protocol qui sititue a 10eme octet			
-	 */
+
 	}
 	public int getProtocol() {
 		return this.getHeader().get(9);
 	}
-	/*
-	 * Retourner Header Check Sum qui sititue a 11eme et 12 octet		
-	 */
+	
+	public String getStringProtocol () {
+		int protocol = getProtocol();
+		if(protocol == 1) {
+			return "Protocole : ICMP (01)";
+		}
+		if(protocol == 2) {
+			return "Protocole : IGMP (02)";
+		}
+		if(protocol == 6) {
+			return "Protocole : TCP (06)";
+		}
+		if(protocol == 17	) {
+			return "Protocole : UDP (17)";
+		}
+		return "Protocole : " + protocol;
+	}
+	
+	public boolean isUDP() {
+		return getProtocol() == 17;
+	}
+	
 	public String getHeaderCheckSum() {
-		String res = "0x";
-		int first = this.getHeader().get(10);
-		
-		if (first < 10) {
-			res+="0";
-		}
-		int seconde = this.getHeader().get(11);
-		
-		if (seconde < 10) {
-			res+="0";
-		}
-		res=res + Integer.toHexString(first) + Integer.toHexString(seconde);
-		return (res);
+		return "0x" + Integer.toHexString(HexFactory.merge2(header.get(10), header.get(11)));
 	}
-	/*
-	 * Retouner Source adresse qui sititue de 13eme a 16eùe octer 
-	 */
-	public String getSource() {
+	
+	public String getIPSource() {
 		StringBuffer res = new StringBuffer("");
-		for(int i = 12 ;i<16 ; i++) {
+		for(int i = 12 ;i < 16 ; i++) {
 			res.append(this.getHeader().get(i));
 			res.append(".");
 		}
 		res.deleteCharAt(res.length()-1);
 		return (res.toString());
 	}
-	/*
-	 * Retouner Destination adresse qui sititue de 17eme a 20eme octer 
-	 */
-	public String getDest() {
+	
+	public String getIPDest() {
 		StringBuffer res = new StringBuffer("");
-		for(int i = 16 ;i<20 ; i++) {
+		for(int i = 16 ;i < 20 ; i++) {
 			res.append(this.getHeader().get(i));
 			res.append(".");
 		}
 		res.deleteCharAt(res.length()-1);
 		return (res.toString());
 	}
-	/*
-	 * Retouner Optinal si il exist
-	 * Option exist si IHL  > 5 (getHeaderLegnth > 20) 
-	 */
+	
 	public int getOptionLength() {
-		int optionLength = 0;
-		if (getHeaderLength() > 20) {
-			optionLength = getTotalLength() - getHeaderLength();
-		}
-		return optionLength;
+		return getHeaderLength() - 20;
 	}
 }

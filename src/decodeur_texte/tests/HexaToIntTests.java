@@ -4,33 +4,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import decodeur_texte.HexaStringToInt;
+import decodeur_texte.HexFactory;
 
 public class HexaToIntTests {
 
 	@Test
 	public void testValeurs() {
-		assertEquals(HexaStringToInt.convert("ff"), 255);
-		assertEquals(HexaStringToInt.convertOctet("ff"), 255);
-		assertEquals(HexaStringToInt.convertOctet("00"), 0);
-		assertEquals(HexaStringToInt.convertOctet("0d"), 13);
-		assertEquals(HexaStringToInt.convertOctet("De"), 222);
-		assertEquals(HexaStringToInt.convert("ff9A"), 65434);
-		assertEquals(HexaStringToInt.convert("8dE"), 2270);
-		assertEquals(HexaStringToInt.convert('9'), 9);;
-		assertEquals(HexaStringToInt.convert('a'), 10);
+		assertEquals(HexFactory.convert("ff"), 255);
+		assertEquals(HexFactory.convertOctet("ff"), 255);
+		assertEquals(HexFactory.convertOctet("00"), 0);
+		assertEquals(HexFactory.convertOctet("0d"), 13);
+		assertEquals(HexFactory.convertOctet("De"), 222);
+		assertEquals(HexFactory.convert("ff9A"), 65434);
+		assertEquals(HexFactory.convert("8dE"), 2270);
+		assertEquals(HexFactory.convert('9'), 9);;
+		assertEquals(HexFactory.convert('a'), 10);
 	}
 	
 	@Test
 	public void testErreurs() {
-		assertEquals(HexaStringToInt.convertOctet("fff"), -1); //Erreur : pas un octet
-		assertEquals(HexaStringToInt.convertOctet("0"), -1);
-		assertEquals(HexaStringToInt.convertOctet("fS"), -1);
-		assertEquals(HexaStringToInt.convertOctet("SfS"), -1);
-		assertEquals(HexaStringToInt.convert('S'), -1);;
-		assertEquals(HexaStringToInt.convert(' '), -1);
-		assertEquals(HexaStringToInt.convert("SfS"), -1);
-		assertEquals(HexaStringToInt.convert(""), -1);
+		assertEquals(HexFactory.convertOctet("fff"), -1); //Erreur : pas un octet
+		assertEquals(HexFactory.convertOctet("0"), -1);
+		assertEquals(HexFactory.convertOctet("fS"), -1);
+		assertEquals(HexFactory.convertOctet("SfS"), -1);
+		assertEquals(HexFactory.convert('S'), -1);;
+		assertEquals(HexFactory.convert(' '), -1);
+		assertEquals(HexFactory.convert("SfS"), -1);
+		assertEquals(HexFactory.convert(""), -1);
 	}
 
 }

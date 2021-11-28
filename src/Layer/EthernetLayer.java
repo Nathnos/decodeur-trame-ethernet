@@ -8,54 +8,47 @@ import java.util.List;
  * @author Thien
  *
  */
+
 public class EthernetLayer implements Frame	 {
-	private List<Integer> frames;
+	private List<Integer> header;
+	private List<Integer> data;
 	
-	public EthernetLayer(List<Integer> frames) {
-		this.frames = frames;
+	public EthernetLayer(List<Integer> frame) {
+		header =  new ArrayList<>();
+		data =  new ArrayList<>();
+		int header_size = 14;
+		for (int i = 0; i < header_size ; i++)
+			header.add(frame.get(i));
+		for (int i = header_size; i < frame.size() ; i++)
+			data.add(frame.get(i));
 	}
-	/*
-	 * Retourner 18 octets de champ d'entete(14 priemere d'octets et 4 a la fin)
-	 */
-	@Override
+
 	public List<Integer> getHeader() {
-		// TODO Auto-generated method stub
-		List <Integer> header =  new ArrayList();
-		for (int i = 0 ; i < 14 ; i ++) {
-			header.add(frames.get(i));
-		}
 		return header;
 	}
 
-	@Override
-	/*
-	 * Retourner 46-1500 octets de donnee
-	 */
 	public List<Integer> getData() {
-		// TODO Auto-generated method stub
-		List <Integer> data =  new ArrayList();
-		for (int i = 14; i < frames.size();i++){
-			data.add(frames.get(i));
-		}
 		return data;
 	}
-	public String getDest() {
+	
+	public String getMACDest() {
 		StringBuffer res = new StringBuffer("");
 		res.append("Destination : ");
 		for(int i = 0 ;i<6 ; i++) {
-			if (this.getHeader().get(i) < 10)
-				res.append("0");
+			if (this.getHeader().get(i) < 16)
+				res.append("0"); //Ajoute un 0 en plus, pour être à 2 char par hexa
 			res.append(Integer.toHexString(this.getHeader().get(i)));
 			res.append(":");
 		}
 		res.deleteCharAt(res.length()-1);
 		return (res.toString());
 	}
-	public String getSource() {
+	
+	public String getMACSource() {
 		StringBuffer res = new StringBuffer("");
 		res.append("Source : ");
 		for(int i = 6 ;i<12 ; i++) {
-			if (this.getHeader().get(i) < 10)
+			if (this.getHeader().get(i) < 16)
 				res.append("0");
 			res.append(Integer.toHexString(this.getHeader().get(i)));
 			res.append(":");
@@ -63,16 +56,25 @@ public class EthernetLayer implements Frame	 {
 		res.deleteCharAt(res.length()-1);
 		return (res.toString());
 	}
+	
 	public String getType() {
 		StringBuffer res = new StringBuffer("");
 		res.append("Type : 0x");
 		for(int i = 12 ;i<14 ; i++) {
-			if (this.getHeader().get(i) < 10)
+			if (this.getHeader().get(i) < 16)
 				res.append("0");
 			res.append(Integer.toHexString(this.getHeader().get(i)));
-			
 		}
-		return (res.toString());
+		String type = res.toString();
+		if(type.equals("Type : 0x0800"))
+			return type + " (IPv4)";
+		if(type.equals("Type : 0x08DD"))
+			return type + " (IPv6)";
+		if(type.equals("Type : 0x0806"))
+			return type + " (ARP)";
+		if(type.equals("Type : 0x8100"))
+			return type + " (VLAN)";
+		return type;
 	}
 	
 }

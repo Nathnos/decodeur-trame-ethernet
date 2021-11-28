@@ -119,7 +119,7 @@ public class Decodeur {
 						// Si on a eu une fin de ligne (texte) sans avoir assez d’octets
 						throw new IllegalArgumentException("Ligne invalide (pas assez d’octets) : ligne " + line.getLine());
 					}
-					ligne.add(HexaStringToInt.convertOctet(v));
+					ligne.add(HexFactory.convertOctet(v));
 				}
 			} catch (ArrayIndexOutOfBoundsException e) { //Si on s’est arrêté alors qu’on avait pas assez d’octets
 				throw new IllegalArgumentException("Ligne invalide (pas assez d’octets) : ligne " + line.getLine());
@@ -135,14 +135,14 @@ public class Decodeur {
 			if(v.length() != 2 || !VALEURS_HEXA.contains(v.charAt(0)) || !VALEURS_HEXA.contains(v.charAt(1))) { 
 				break; //fin de ligne
 			}
-			last_line.add(HexaStringToInt.convertOctet(v));
+			last_line.add(HexFactory.convertOctet(v));
 		}
 		trame.add(last_line);
 		return trame;
 	}
 	
 	private int getOffset(Line line) {
-		return HexaStringToInt.convert(line.getData().split(" ")[0]);
+		return HexFactory.convert(line.getData().split(" ")[0]);
 	}
 	
 	@Override
