@@ -1,7 +1,7 @@
 package decodeur_texte;
 
 /**
- * Classe outil pour convertir un octet hexadécimal (String deux caractères valides) en int
+ * Classe outil pour convertir un octet hexadï¿½cimal (String deux caractï¿½res valides) en int
  * @author villa
  *
  */
@@ -10,13 +10,13 @@ public class HexFactory {
 	
 	public static int convertOctet(String hexa) {
 		if(hexa.length() != 2) { // Deux symboles hexa pour un octet
-			System.err.println("N’est pas un octet hexadécimal : " + hexa);
+			System.err.println("Nï¿½est pas un octet hexadï¿½cimal : " + hexa);
 			return -1;
 		}
 		try {
 			return Integer.parseInt(hexa, 16);
 		} catch (NumberFormatException e) {
-			System.err.println("N’est pas un octet hexadécimal : " + hexa);
+			System.err.println("Nï¿½est pas un octet hexadï¿½cimal : " + hexa);
 			return -1;
 		}
 	}
@@ -25,7 +25,7 @@ public class HexFactory {
 		try {
 			return Integer.parseInt(hexa, 16);
 		} catch (NumberFormatException e) {
-			System.err.println("N’est pas un nombre hexadécimal : " + hexa);
+			System.err.println("Nï¿½est pas un nombre hexadï¿½cimal : " + hexa);
 			return -1;
 		}
 	}
@@ -34,7 +34,7 @@ public class HexFactory {
 		try {
 			return Integer.parseInt(String.valueOf(hexa), 16);
 		} catch (NumberFormatException e) {
-			System.err.println("N’est pas un nombre hexadécimal : " + hexa);
+			System.err.println("Nï¿½est pas un nombre hexadï¿½cimal : " + hexa);
 			return -1;
 		}
 	}
@@ -86,5 +86,12 @@ public class HexFactory {
 		int val10 = merge2(val1, val2);
 		int val20 = merge2(val3, val4);
 		return merge2(val10, val20);
+	}
+	public static String converTo2Octet(int value){
+		StringBuffer res = new StringBuffer("");
+		if (value < 16)
+			res.append("0");
+		res.append(Integer.toHexString(value));
+		return res.toString();
 	}
 }

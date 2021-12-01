@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 import decodeur_texte.Decodeur;
+import decodeur_texte.HexFactory;
 import decodeur_texte.ListeTrames;
 
 public class Analyse {
@@ -25,7 +26,7 @@ public class Analyse {
 		System.out.println("Total Length : " + ip.getTotalLength() + " octets");
 		System.out.println("Fragment Identification : " + ip.getIden()); 
 		System.out.println("Fragment Offset : " + ip.getFragmentOffset());
-		System.out.println("Don’t fragment : " + ip.getFlagDF());
+		System.out.println("Donï¿½t fragment : " + ip.getFlagDF());
 		System.out.println("More fragments : " + ip.getFlagMF());
 		System.out.println("Time To Live : " + ip.getTTL());
 		System.out.println("Protocol : " + ip.getStringProtocol());
@@ -87,6 +88,26 @@ public class Analyse {
 	
 	public static void analyseDHCP(DhcpLayer dhcp) {
 		System.out.println("\n****** Couche 7 (DHCP) ******");
+		System.out.println("Header: " + dhcp.getHeader());
+		System.out.println("Data: " + dhcp.getData());
+		if (dhcp.getOperationCode() == 1)
+			System.out.println("Message type: Boot Request (1)");
+		else if (dhcp.getOperationCode() == 2)
+			System.out.println("Message type: Boot Reply (2)");
+		System.out.println("Hardware type: " + Constant.HTYPE.get(dhcp.getHType()) +" 0x"+HexFactory.converTo2Octet(dhcp.getHType()));
+		System.out.println("Hardware adresse length: " +dhcp.getHLength());
+		System.out.println("Hop : " +dhcp.getHop());
+		System.out.println("Transaction ID: " +dhcp.getTransId());
+		System.out.println("Seconds elapsed : " + dhcp.getSecond());
+		System.out.println("Bootp flags: " + dhcp.getBootpFlags());
+		System.out.println("Client IP addresse: " + dhcp.getClientIpAdres());
+		System.out.println("Your (client) IP addresse: " + dhcp.getYourClientIpAdres());
+		System.out.println("Next server IP adresse: " + dhcp.getNextServerIpAdress());
+		System.out.println("Relay agent IP addresse: " + dhcp.getGateWayIpAdres());
+		System.out.println("Client MAC adresse: " + dhcp.getClientMacAdres());
+		System.out.println("Client addresse hardward padding: " +dhcp.getClientPadding());
+		System.out.println("Magic Cookie: " + dhcp.getMacgicCookie());
+		dhcp.analyseAllOption();
 	}
 	
 	public static void analyse(List <Integer> frame) {
@@ -103,13 +124,12 @@ public class Analyse {
 			}
 			else if(udp.isDNS()) {
 				DnsLayer dns = new DnsLayer(udp.getData());
-				analyseDNS(dns);
-				
+				analyseDNS(dns);	
 			}
 		}
 	}
 	public static void main (String []args) throws FileNotFoundException {
-		String path =  "data/trames_analyse/analyse3.txt";
+		String path =  "data/trames_analyse/trames_DHCP_ACK.txt";
 		ListeTrames trames = Decodeur.getListTrames(path);
 		analyse(trames.getTrame(0));
 		
