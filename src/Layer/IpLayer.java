@@ -50,11 +50,11 @@ public class IpLayer implements Frame {
 	}
 	
 	public String getIden() { //TrustedHostID ; Fragment Identification
-		return "0x" + HexFactory.merge2(header.get(4), header.get(5));
+		return "0x" + Integer.toHexString(HexFactory.merge2(header.get(4), header.get(5)));
 		}
 	
 	public String getFragmentOffset() {
-		return "0x" + HexFactory.split_binary_8(header.get(6)).substring(3);
+		return "Ob" + HexFactory.split_binary_8(header.get(6)).substring(3);
 	}
 	
 	public boolean getFlagDF() {

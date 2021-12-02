@@ -20,13 +20,13 @@ public class Analyse {
 		System.out.println("\n****** Couche 3 (IP) ******");
 		System.out.println("Version : " + ip.getVersion());
 		System.out.println("Source : " + ip.getIPSource());
-		System.out.println("Destionation : " + ip.getIPDest());
+		System.out.println("Destination : " + ip.getIPDest());
 		System.out.println("Header Length : " + ip.getHeaderLength()+  " octets");
 		System.out.println("Differentiated Services Field  : " + ip.getTOS());
 		System.out.println("Total Length : " + ip.getTotalLength() + " octets");
 		System.out.println("Fragment Identification : " + ip.getIden()); 
 		System.out.println("Fragment Offset : " + ip.getFragmentOffset());
-		System.out.println("Don�t fragment : " + ip.getFlagDF());
+		System.out.println("Don't fragment : " + ip.getFlagDF());
 		System.out.println("More fragments : " + ip.getFlagMF());
 		System.out.println("Time To Live : " + ip.getTTL());
 		System.out.println("Protocol : " + ip.getStringProtocol());
@@ -88,24 +88,22 @@ public class Analyse {
 	
 	public static void analyseDHCP(DhcpLayer dhcp) {
 		System.out.println("\n****** Couche 7 (DHCP) ******");
-		System.out.println("Header: " + dhcp.getHeader());
-		System.out.println("Data: " + dhcp.getData());
 		if (dhcp.getOperationCode() == 1)
 			System.out.println("Message type: Boot Request (1)");
 		else if (dhcp.getOperationCode() == 2)
 			System.out.println("Message type: Boot Reply (2)");
 		System.out.println("Hardware type: " + Constant.HTYPE.get(dhcp.getHType()) +" 0x"+HexFactory.converTo2Octet(dhcp.getHType()));
-		System.out.println("Hardware adresse length: " +dhcp.getHLength());
-		System.out.println("Hop : " +dhcp.getHop());
+		System.out.println("Hardware address length: " +dhcp.getHLength());
+		System.out.println("Hops : " +dhcp.getHop());
 		System.out.println("Transaction ID: " +dhcp.getTransId());
 		System.out.println("Seconds elapsed : " + dhcp.getSecond());
 		System.out.println("Bootp flags: " + dhcp.getBootpFlags());
-		System.out.println("Client IP addresse: " + dhcp.getClientIpAdres());
-		System.out.println("Your (client) IP addresse: " + dhcp.getYourClientIpAdres());
-		System.out.println("Next server IP adresse: " + dhcp.getNextServerIpAdress());
-		System.out.println("Relay agent IP addresse: " + dhcp.getGateWayIpAdres());
-		System.out.println("Client MAC adresse: " + dhcp.getClientMacAdres());
-		System.out.println("Client addresse hardward padding: " +dhcp.getClientPadding());
+		System.out.println("Client IP address: " + dhcp.getClientIpAdres());
+		System.out.println("Your (client) IP address: " + dhcp.getYourClientIpAdres());
+		System.out.println("Next server IP adress: " + dhcp.getNextServerIpAdress());
+		System.out.println("Relay agent IP address: " + dhcp.getGateWayIpAdres());
+		System.out.println("Client MAC adress: " + dhcp.getClientMacAdres());
+		System.out.println("Client address hardward padding: " +dhcp.getClientPadding());
 		System.out.println("Magic Cookie: " + dhcp.getMacgicCookie());
 		dhcp.analyseAllOption();
 	}
