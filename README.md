@@ -21,7 +21,9 @@ Le code se compose en deux parties : 
 - On retourne ensuite un wrapper ListeTrames, pour faciliter l’accès aux diverses trames et octets pour la partie analyse.
 
 ### Partie analyse
-(à venir)
+- On prend chaque trame une par une et on la décompose successivement
+- On donne la trame entière à notre analyseur Ethernet, qui va en retirer l’en-tête
+- On donne ensuite le champ "data" d’Ethernet à l’analyseur IP ; et ainsi de suite, couche après couche.
 
 ## Liste des protocoles analyés :
 - Couche 2: Ethernet 
