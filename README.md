@@ -5,7 +5,7 @@ Un projet pour décoder de façon basique des trames ethernet dans un fichier.
 Le programme prend en entrée un fichier trace (format texte) contenant les octets ‘bruts’, tels que capturés sur le réseau. Ce fichier pourra contenir plusieurs 
 trames Ethernet à la suite (sans préambule ni champ FCS).
 
-[Vidéo de présentation](https://www.youtube.com) (à venir)
+[Vidéo de présentation](https://www.youtube.com/watch?v=HZZOALF-50M)
 
 ## Structure du code
 
